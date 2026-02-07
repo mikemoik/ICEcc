@@ -2,64 +2,54 @@
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage{tikz}
+\usetikzlibrary{calc}
 \usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage{xcolor}
-\usepackage{helvet} % Sans-serif font for readability
 
-% Define credit card size (85.60mm x 53.98mm), portrait orientation
-\geometry{paperwidth=53.98mm, paperheight=85.60mm, margin=2mm}
-\renewcommand{\familydefault}{\sfdefault}
+%\geometry{paperwidth=53.98mm, paperheight=85.60mm, margin=0mm}
+\geometry{paperwidth=60mm, paperheight=90mm, margin=0mm}
 \pagestyle{empty}
 
-% --- Customization Area ---
-\newcommand{\myname}{JOHN DOE}
-\newcommand{\mydob}{01/01/1990}
-\newcommand{\myblood}{A+}
-\newcommand{\myaddress}{123 Main St, Anytown}
-\newcommand{\myconditions}{Diabetes, Penicillin Allergy}
-\newcommand{\mycontactone}{Jane Doe (Wife) - 555-0199}
-\newcommand{\mycontacttwo}{Dr. Smith - 555-0200}
-% -------------------------
-
 \begin{document}
+\noindent % Prevents paragraph indentation from shifting the image
 
-% Use tikz for the card layout
-\begin{tikzpicture}
-    % Main card border
-    \draw[rounded corners=2mm, thick] (0,0) rectangle (5.398,8.56);
+% Define the official Red Cross color
+%\definecolor{redcrossred}{RGB}{238, 33, 36}
+\definecolor{redcrossred}{RGB}{237, 27, 46}
+\def\colorrc{rgb:red,237;green,27;blue,46}
 
-    % Header with medical cross
-    \node at (2.7, 7.8) {\textbf{\Large IN CASE OF}};
-    \node at (2.7, 7.0) {\textbf{\Large EMERGENCY}};
-    \draw[thick] (0.3, 7.2) rectangle (1.3, 7.8); % Medical cross icon
-    \draw[thick] (0.3, 7.4) -- (1.3, 7.4);
-    \draw[thick] (0.8, 7.2) -- (0.8, 7.8);
+% Custom function: \drawredcross{x}{y}{scale}
+\newcommand{\drawredcross}[2]{
+    \begin{scope}[shift={#1}, scale=#2]
+        \fill[redcrossred] 
+            (-1.5, -0.5) rectangle (1.5, 0.5)  % Horizontal bar
+            (-0.5, -1.5) rectangle (0.5, 1.5); % Vertical bar
+    \end{scope}
+}
 
-    % Blood Type
-    \draw[thick] (0, 6.5) -- (5.398, 6.5);
-    \node[anchor=west] at (0.1, 6.1) {\textbf{Blood Type}};
-    \node[anchor=west] at (0.1, 5.4) {\large A RH-POS K-neg};
+\def\umax{53.98mm}% variable d
+\def\vmax{-85.60mm}% variable d
+\def\widthborder{2.0mm}% border
+\def\dRCu{5.0mm}% offset RC symbol
+\def\dRCv{-5.0mm}% offset RC symbol
+\tikzset{drawandfill/.style={draw=#1,fill=#1}}
+\begin{tikzpicture}[remember picture, overlay]
+  \coordinate (UL) at (current page.north west);
+  \coordinate (LR) at (current page.south east);
+  \coordinate (O) at (0.0, 0.0);
+  \coordinate (X) at (\umax, \vmax);
+  \coordinate (dB) at (\widthborder, -\widthborder);
+  \coordinate (dRC) at (\dRCu, \dRCv);
+  \coordinate (pRC) at ($(O)+(dB)+(dRC)$);
 
-    % Allergies
-    \draw[thick] (0, 4.8) -- (5.398, 4.8);
-    \node[anchor=west] at (0.1, 4.4) {\textbf{Allergies}};
-    % Add allergy details here
+  % canvas
+  \filldraw[fill=lightgray, draw=black] (O) rectangle (X);
+  \filldraw[rounded corners=2mm, drawandfill=redcrossred] (O) rectangle (X);
+  \filldraw[rounded corners=2mm, drawandfill=white] ($(O)+(dB)$) rectangle ($(X)-(dB)$);
 
-    % Medication
-    \draw[thick] (0, 2.8) -- (5.398, 2.8);
-    \node[anchor=west] at (0.1, 2.4) {\textbf{Medication}};
-    % Add medication details here
+  \drawredcross{(pRC)}{.3}
 
-    % Emergency Call (Ecall)
-    \draw[thick] (0, 1.2) -- (5.398, 1.2);
-    \node[anchor=west] at (0.1, 0.8) {\textbf{Ecall (Wife)}};
-    % Add phone number here
-
-    % Flip instruction
-    \draw[thick] (0, 0.4) -- (5.398, 0.4);
-    \node[anchor=west] at (0.1, 0.15) {Flip};
-    \draw[->, thick] (4.0, 0.15) -- (5.2, 0.15);
 \end{tikzpicture}
-
 \end{document}
+
