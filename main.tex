@@ -1,0 +1,65 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{helvet} % Sans-serif font for readability
+
+% Define credit card size (85.60mm x 53.98mm), portrait orientation
+\geometry{paperwidth=53.98mm, paperheight=85.60mm, margin=2mm}
+\renewcommand{\familydefault}{\sfdefault}
+\pagestyle{empty}
+
+% --- Customization Area ---
+\newcommand{\myname}{JOHN DOE}
+\newcommand{\mydob}{01/01/1990}
+\newcommand{\myblood}{A+}
+\newcommand{\myaddress}{123 Main St, Anytown}
+\newcommand{\myconditions}{Diabetes, Penicillin Allergy}
+\newcommand{\mycontactone}{Jane Doe (Wife) - 555-0199}
+\newcommand{\mycontacttwo}{Dr. Smith - 555-0200}
+% -------------------------
+
+\begin{document}
+
+% Use tikz for the card layout
+\begin{tikzpicture}
+    % Main card border
+    \draw[rounded corners=2mm, thick] (0,0) rectangle (5.398,8.56);
+
+    % Header with medical cross
+    \node at (2.7, 7.8) {\textbf{\Large IN CASE OF}};
+    \node at (2.7, 7.0) {\textbf{\Large EMERGENCY}};
+    \draw[thick] (0.3, 7.2) rectangle (1.3, 7.8); % Medical cross icon
+    \draw[thick] (0.3, 7.4) -- (1.3, 7.4);
+    \draw[thick] (0.8, 7.2) -- (0.8, 7.8);
+
+    % Blood Type
+    \draw[thick] (0, 6.5) -- (5.398, 6.5);
+    \node[anchor=west] at (0.1, 6.1) {\textbf{Blood Type}};
+    \node[anchor=west] at (0.1, 5.4) {\large A RH-POS K-neg};
+
+    % Allergies
+    \draw[thick] (0, 4.8) -- (5.398, 4.8);
+    \node[anchor=west] at (0.1, 4.4) {\textbf{Allergies}};
+    % Add allergy details here
+
+    % Medication
+    \draw[thick] (0, 2.8) -- (5.398, 2.8);
+    \node[anchor=west] at (0.1, 2.4) {\textbf{Medication}};
+    % Add medication details here
+
+    % Emergency Call (Ecall)
+    \draw[thick] (0, 1.2) -- (5.398, 1.2);
+    \node[anchor=west] at (0.1, 0.8) {\textbf{Ecall (Wife)}};
+    % Add phone number here
+
+    % Flip instruction
+    \draw[thick] (0, 0.4) -- (5.398, 0.4);
+    \node[anchor=west] at (0.1, 0.15) {Flip};
+    \draw[->, thick] (4.0, 0.15) -- (5.2, 0.15);
+\end{tikzpicture}
+
+\end{document}
