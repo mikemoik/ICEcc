@@ -34,6 +34,12 @@
     \fill[white] (0.35,0) circle (0.8cm);  % Inner circle (offset to the right)
   \end{scope}
 }
+\newcommand{\drawredcrystal}[2]{
+  \begin{scope}[shift={#1}, scale=#2, rotate=45]
+    \fill[redcrossred] (-1,1) rectangle (1,-1); % Outer rectangle
+    \fill[white] (-.5,.5) rectangle (.5,-.5); % inner rectangle
+  \end{scope}
+}
 
 \def\umax{53.98mm}% variable d
 \def\vmax{-85.60mm}% variable d
@@ -54,7 +60,8 @@
   \filldraw[rounded corners=2mm, drawandfill=redcrossred] (O) rectangle (X);
   \filldraw[rounded corners=2mm, drawandfill=white] ($(O)+(dB)$) rectangle ($(X)-(dB)$);
   \begin{scope}[shift={(pBox00)}, scale=.3]
-    \drawredcross{(0,0)}{.9}
+    \drawredcross{(0,0)}{.8}
+    \drawredcrystal{(7,0)}{1}
     \drawredmoon{(13.5,0)}{1.2}
     \begin{scope}[shift={(6.8,0.0)}, scale=1.0]
       \node[align=center] at (0.0, 0.0) {In Case Of \\ \textbf{\large{EMERGENCY}}};
