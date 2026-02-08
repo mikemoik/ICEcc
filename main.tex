@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage{xcolor}
+\usepackage{fontawesome}
 
 %\geometry{paperwidth=53.98mm, paperheight=85.60mm, margin=0mm}
 \geometry{paperwidth=60mm, paperheight=90mm, margin=0mm}
@@ -17,22 +18,27 @@
 % Define the official Red Cross color
 %\definecolor{redcrossred}{RGB}{238, 33, 36}
 \definecolor{redcrossred}{RGB}{237, 27, 46}
-\def\colorrc{rgb:red,237;green,27;blue,46}
 
 % Custom function: \drawredcross{x}{y}{scale}
 \newcommand{\drawredcross}[2]{
-    \begin{scope}[shift={#1}, scale=#2]
-        \fill[redcrossred] 
-            (-1.5, -0.5) rectangle (1.5, 0.5)  % Horizontal bar
-            (-0.5, -1.5) rectangle (0.5, 1.5); % Vertical bar
-    \end{scope}
+  \begin{scope}[shift={#1}, scale=#2]
+    \fill[redcrossred] 
+        (-1.5, 0.5) rectangle (1.5, -0.5)  % Horizontal bar
+        (-0.5, 1.5) rectangle (0.5, -1.5); % Vertical bar
+  \end{scope}
+}
+\newcommand{\drawredmoon}[2]{
+  \begin{scope}[shift={#1}, scale=#2]
+    \clip (-1.5,-1.5) rectangle (1.5,1.5); % Ensure canvas size
+    \fill[redcrossred] (0,0) circle (1cm); % Outer circle
+    \fill[white] (0.35,0) circle (0.8cm);  % Inner circle (offset to the right)
+  \end{scope}
 }
 
 \def\umax{53.98mm}% variable d
 \def\vmax{-85.60mm}% variable d
 \def\widthborder{2.0mm}% border
-\def\dRCu{5.0mm}% offset RC symbol
-\def\dRCv{-5.0mm}% offset RC symbol
+\def\marginbox{5.0mm}% offset boxes
 \tikzset{drawandfill/.style={draw=#1,fill=#1}}
 \begin{tikzpicture}[remember picture, overlay]
   \coordinate (UL) at (current page.north west);
@@ -40,15 +46,50 @@
   \coordinate (O) at (0.0, 0.0);
   \coordinate (X) at (\umax, \vmax);
   \coordinate (dB) at (\widthborder, -\widthborder);
-  \coordinate (dRC) at (\dRCu, \dRCv);
-  \coordinate (pRC) at ($(O)+(dB)+(dRC)$);
+  \coordinate (pBox00) at ($(O)+(dB)+(\marginbox,-\marginbox)$);
 
   % canvas
-  \filldraw[fill=lightgray, draw=black] (O) rectangle (X);
+  %\filldraw[fill=lightgray, draw=black] (O) rectangle (X);
+
   \filldraw[rounded corners=2mm, drawandfill=redcrossred] (O) rectangle (X);
   \filldraw[rounded corners=2mm, drawandfill=white] ($(O)+(dB)$) rectangle ($(X)-(dB)$);
+  \begin{scope}[shift={(pBox00)}, scale=.3]
+    \drawredcross{(0,0)}{.9}
+    \drawredmoon{(13.5,0)}{1.2}
+    \begin{scope}[shift={(6.8,0.0)}, scale=1.0]
+      \node[align=center] at (0.0, 0.0) {In Case Of \\ \textbf{\large{EMERGENCY}}};
+    \end{scope}
+  \end{scope}
 
-  \drawredcross{(pRC)}{.3}
+  \begin{scope}[shift={($(pBox00)+(0,-13mm)$)}, scale=1.0]
+    \node[draw, align=left] at (2.0, 0.0) {\tiny{Blood Type:}\\ \Large{A RH-POS}};
+  \end{scope}
+
+  \begin{scope}[shift={($(pBox00)+(0,-22mm)$)}, scale=1.0]
+    %\node[align=left] at (2.0, 0.0) {\small{Person:\\ Name: Michael Schweitzer \\ DOB: 05/16/1973 \\ Nationality: German}};
+    \node[align=center] at (2.0, 0.0) {Max Muster};
+  \end{scope}
+
+  \begin{scope}[shift={($(pBox00)+(0,-25mm)$)}, scale=1.0]
+    %\node[align=left] at (2.0, 0.0) {\small{Person:\\ Name: Michael Schweitzer \\ DOB: 05/16/1973 \\ Nationality: German}};
+    \node[align=center] at (2.0, 0.0) {\tiny{}(1980, german)};
+  \end{scope}
+
+  \begin{scope}[shift={($(pBox00)+(0,-39mm)$)}, scale=1.0]
+    \node[draw, align=left] at (2.0, 0.0) {Allergies:\\None};
+  \end{scope}
+
+  \begin{scope}[shift={($(pBox00)+(0,-52mm)$)}, scale=1.0]
+    \node[draw, align=left] at (2.0, 0.0) {Medication:\\None};
+  \end{scope}
+
+  \begin{scope}[shift={($(pBox00)+(0,-65mm)$)}, scale=1.0]
+    \node[draw, align=left] at (2.0, 0.0) {Contact:\\Maria Muster (Wife)\\ \faMobilePhone: +49 1777 777777777};
+  \end{scope}
+
+  \begin{scope}[shift={($(pBox00)+(0,-75mm)$)}, scale=1.0]
+    \node[align=left] at (2.0, 0.0) {\small{\faArrowRight Flip for additional Information \faArrowRight}};
+  \end{scope}
 
 \end{tikzpicture}
 \end{document}
